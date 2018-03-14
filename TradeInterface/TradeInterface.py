@@ -27,23 +27,32 @@ class Trade:
     """
 
     def __init__(self, userid='', password=''):
-        self.send_dic = {'userid': userid, 'password': self.md5encryption(password), 'stock_dic_ls': list()}
+        self.send_dic = {'userid': userid.strip(), 'password': self.md5encryption(password), 'stock_dic_ls': list()}
         self.url = 'http://192.168.0.136/Tradeinterface/get_tradeinfo'
 
     # set userid of user of haizhi licai
     def set_userid(self, userid):
-        self.send_dic['userid'] = userid
-        return True
+        if userid.strip() != '':
+            self.send_dic['userid'] = userid
+            return True
+        else:
+            return False
 
     # set password of haizhi licai
     def set_password(self, password):
-        self.send_dic['password'] = self.md5encryption(password)
-        return True
+        if password.strip() != '':
+            self.send_dic['password'] = self.md5encryption(password)
+            return True
+        else:
+            return False
 
     # set stocks_ls of your own stocks,the type is list,and each elemnet of it is dictionary
     def set_stock_dic_ls(self, stock_dic_ls):
-        self.send_dic['stock_dic_ls'] = stock_dic_ls
-        return True
+        if len(stock_dic_ls) > 0:
+            self.send_dic['stock_dic_ls'] = stock_dic_ls
+            return True
+        else:
+            return False
 
     # return the template of stock_dic
     def get_stock_dic(self):
@@ -52,9 +61,12 @@ class Trade:
 
     # 实现md5加密
     def md5encryption(self, password):
-        md = hashlib.md5()
-        md.update(password.encode(encoding='utf-8'))
-        return md.hexdigest()
+        if password.strip() != '':
+            md = hashlib.md5()
+            md.update(password.encode(encoding='utf-8'))
+            return md.hexdigest()
+        else:
+            return ''
 
     # post the request to haizhi licai,and return the result
     def http_post(self):
