@@ -10,7 +10,8 @@
 """
 import json
 import urllib2
-
+import urllib
+import hashlib
 
 class Trade:
     """
@@ -26,27 +27,34 @@ class Trade:
     """
 
     def __init__(self, userid='', password=''):
-        self.send_dic = {'userid': userid, 'password': password, 'stock_dic_ls': list()}
-        self.url = 'http://192.168.0.136/Stock_selecter/w2ot'
+        self.send_dic = {'userid': userid, 'password': self.md5encryption(password), 'stock_dic_ls': list()}
+        self.url = 'http://192.168.0.136/Tradeinterface/get_tradeinfo'
 
     # set userid of user of haizhi licai
     def set_userid(self, userid):
-        print userid
         self.send_dic['userid'] = userid
+        return True
 
     # set password of haizhi licai
     def set_password(self, password):
-        print password
-        self.send_dic['password'] = password
+        self.send_dic['password'] = self.md5encryption(password)
+        return True
 
     # set stocks_ls of your own stocks,the type is list,and each elemnet of it is dictionary
     def set_stock_dic_ls(self, stock_dic_ls):
         self.send_dic['stock_dic_ls'] = stock_dic_ls
+        return True
 
     # return the template of stock_dic
     def get_stock_dic(self):
         stock_dic = {'buy_sell': '', 'buy_price': '', 'sell_price': '', 'volume': 'average_all', 'code': ''}
         return stock_dic
+
+    # 实现md5加密
+    def md5encryption(self, password):
+        md = hashlib.md5()
+        md.update(password.encode(encoding='utf-8'))
+        return md.hexdigest()
 
     # post the request to haizhi licai,and return the result
     def http_post(self):
@@ -69,8 +77,10 @@ class Trade:
                 if stock_dic['code'] == '':
                     return "code attribute can't be a blank string"
         # 数据暂时没有问题，json编码提交
-        jdata = json.dumps(self.send_dic)  # 对数据进行JSON格式化编码
+        jdata = json.dumps(self.send_dic)  # 对数据进行json格式化编码
+        # print jdata
+        jdata = urllib.urlencode({'tradeinfo': jdata})  # urlencode编码
         req = urllib2.Request(self.url, jdata)  # 生成页面请求的完整数据
         res = urllib2.urlopen(req)  # 发送页面请求
-        return res.read()
+        return res.read()  # 返回结果
 
