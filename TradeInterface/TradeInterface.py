@@ -27,11 +27,14 @@ class Trade:
     """
 
     def __init__(self, userid='', password=''):
-        self.send_dic = {'userid': userid.strip(), 'password': self.md5encryption(password), 'stock_dic_ls': list()}
+        self.send_dic = {'userid': '', 'password': '', 'stock_dic_ls': list()}
+        self.set_userid(userid)
+        self.set_password(password)
         self.url = 'http://192.168.0.136/Tradeinterface/get_tradeinfo'
 
     # set userid of user of haizhi licai
-    def set_userid(self, userid):
+    def set_userid(self, userid=''):
+        userid = str(userid)
         if userid.strip() != '':
             self.send_dic['userid'] = userid
             return True
@@ -39,7 +42,8 @@ class Trade:
             return False
 
     # set password of haizhi licai
-    def set_password(self, password):
+    def set_password(self, password=''):
+        password = str(password)
         if password.strip() != '':
             self.send_dic['password'] = self.md5encryption(password)
             return True
@@ -47,7 +51,7 @@ class Trade:
             return False
 
     # set stocks_ls of your own stocks,the type is list,and each elemnet of it is dictionary
-    def set_stock_dic_ls(self, stock_dic_ls):
+    def set_stock_dic_ls(self, stock_dic_ls=list()):
         if len(stock_dic_ls) > 0:
             self.send_dic['stock_dic_ls'] = stock_dic_ls
             return True
