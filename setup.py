@@ -14,7 +14,7 @@ from setuptools import setup, find_packages
 setup(
     name = "TradeInterface",
 	py_modules = ['TradeInterface'],
-    version = "0.1.7",
+    version = "0.1.9",
     keywords = ("pip", "TradeInterface","trade",'haizhi'),
     description = "a interface of simulate-trading stocks",
     long_description = "a interface of simulate-trading stocks",
