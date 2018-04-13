@@ -31,8 +31,8 @@ class Trade:
     """
 
     def __init__(self, userid='', password=''):
-        # self.prefix = "http://www.haizhilicai.com/"
-        self.prefix = "http://192.168.0.136/"
+        self.prefix = "http://www.haizhilicai.com/"
+        # self.prefix = "http://192.168.0.136/"
         self.trade_url = self.prefix + 'Tradeinterface/get_tradeinfo'
         self.prof_info_url = self.prefix + 'Tradeinterface/get_profit_info'
         self.query_records_url = self.prefix + 'Tradeinterface/get_rocords_info'
@@ -144,8 +144,8 @@ class BackTestTrade:
     """
 
     def __init__(self, userid='', sub_account='', password=''):
-        # self.prefix = "http://www.haizhilicai.com/"
-        self.prefix = "http://192.168.0.136/"
+        self.prefix = "http://www.haizhilicai.com/"
+        # self.prefix = "http://192.168.0.136/"
         self.trade_url = self.prefix + 'Tradeinterface/bt_tradeinfo'
         self.prof_info_url = self.prefix + 'Tradeinterface/get_profit_info'
         self.query_records_url = self.prefix + 'Tradeinterface/get_rocords_info'
