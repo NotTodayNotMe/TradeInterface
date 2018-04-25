@@ -68,10 +68,18 @@ class TestEngine(object):
     #显示当前的交易引擎类型
     @property
     def core(self):
+        '''
+        返回当前的引擎类型
+        :return:
+        '''
         return self._core.__class__
     #显示当前回测引擎时间
     @property
     def current_time(self):
+        '''
+        返回当前的引擎时间，主要用于回测
+        :return:
+        '''
         if isinstance(self._core,RealTimeTrading):
             return datetime.datetime.now().strftime('%Y-%m-%d,%H:%M:%S')
         elif isinstance(self._core,HistoryTrading):
@@ -79,6 +87,11 @@ class TestEngine(object):
 
     @current_time.setter
     def current_time(self,date):
+        '''
+        自由设定引擎时间
+        :param date:
+        :return:
+        '''
         if isinstance(self._core,HistoryTrading):
             if isinstance(date,str):
                 self._current_time = datetime.datetime.strptime(date,'%Y-%m-%d')
@@ -88,6 +101,11 @@ class TestEngine(object):
             raise TypeError, '%s can not operate on current_time' % (self._core.__class__)
 
     def shift_current_time(self,days):
+        '''
+        按时间步长调整时间
+        :param days:
+        :return:
+        '''
         if isinstance(self._core,RealTimeTrading):
             raise TypeError,'RealTimeTrading can not operate on current_time'
         elif isinstance(self._core,HistoryTrading):
@@ -136,15 +154,21 @@ class TestEngine(object):
             res = self._core.bt_sell()
             return json.loads(res)
     #撤单
-    def cancel_order(self):
-        pass
+    def cancel_order(self,pre_id):
+        if isinstance(self._core,RealTimeTrading):
+            return self._core.cancel_order(pre_id)
+        else:
+            raise TypeError
     #资产和持仓情况
     def query_profit(self):
         if isinstance(self._core, RealTimeTrading):
             return json.loads(self._core.query_profit())
         elif isinstance(self._core,HistoryTrading):
             pass
-
+    #委托查询
+    def query_records(self,start="2018-4-4", end="2018-04-05"):
+        if isinstance(self._core,RealTimeTrading):
+            return json.loads(self._core.query_records(start,end))
     #历史交割查询
     def query_history_records(self,start='',end=''):
         if isinstance(self._core,RealTimeTrading):
@@ -169,6 +193,12 @@ class TestEngine(object):
             self._core.set_strategy_name(stratagy_name)
         else:
             raise AttributeError, '%s has no attribute stratagy_name' % (self._core.__class__)
+    #创建策略
+    def create_stratagy(self,stratagy_name):
+        if isinstance(self._core,HistoryTrading):
+            return self._core.create_strategy(stratagy_name)
+        else:
+            raise AttributeError
     #删除策略
     def del_stratagy(self,stratagy_name):
         if isinstance(self._core,HistoryTrading):
