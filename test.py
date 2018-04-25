@@ -4,8 +4,8 @@ import datetime
 import json
 
 '''实盘交易引擎示例'''
-user_id = '18126352115'
-password = 'Cloud25683'
+user_id =
+password = 
 def Realtime():
     '''
     实盘交易引擎
