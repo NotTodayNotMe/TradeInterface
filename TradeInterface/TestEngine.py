@@ -113,17 +113,19 @@ class TestEngine(object):
             return self._current_time.strftime('%Y-%m-%d')
     #购买
     @input_checker
-    def buy(self,code,volume,price_type='now_price',price=None,date=None):
+    def buy(self,code,volume,price_type='now_price',price=None,date=None,effect_term = 1):
         if isinstance(self._core,RealTimeTrading):
             dic = {'code':code,
                    'volume':volume,
                    'price_type': price_type,
                    'price': price,
-                   'effect_term':'2'}
+                   'effect_term':str(effect_term)}
             self._core.set_stock_dic(dic)
             res = self._core.buy()
             return json.loads(res)
         elif isinstance(self._core,HistoryTrading):
+            if not date:
+                date = self._current_time.strftime("%Y-%m-%d")
             dic = {'date':date,
                    'code': code,
                    'volume': volume,
@@ -134,17 +136,19 @@ class TestEngine(object):
             return json.loads(res)
     #卖出
     @input_checker
-    def sell(self,code,volume,price_type='now_price',price=None,date=None):
+    def sell(self,code,volume,price_type='now_price',price=None,date=None,effect_term = 1):
         if isinstance(self._core,RealTimeTrading):
             dic = {'code':code,
                    'volume':volume,
                    'price_type': price_type,
                    'price': price,
-                   'effect_term':'2'}
+                   'effect_term':str(effect_term)}
             self._core.set_stock_dic(dic)
             res = self._core.sell()
             return json.loads(res)
         elif isinstance(self._core,HistoryTrading):
+            if not date:
+                date = self._current_time.strftime("%Y-%m-%d")
             dic = {'date': date,
                    'code': code,
                    'volume': volume,

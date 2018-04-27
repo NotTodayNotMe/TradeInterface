@@ -4,8 +4,8 @@ import datetime
 import json
 
 '''实盘交易引擎示例'''
-user_id =
-password = 
+user_id ='18126352115'
+password = 'Cloud25683'
 def Realtime():
     '''
     实盘交易引擎
@@ -48,8 +48,8 @@ def History():
 
 
 if __name__ == '__main__':
-    Realtime()
-    #History()
+    #Realtime()
+    History()
 '''
 Engine.shift_current_time(-20)
 print Engine.core
